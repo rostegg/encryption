@@ -27,7 +27,11 @@ public class App
     public static void main( String[] args ) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, DecoderException
     {
 
-    	xor();
+    	Encryption en = new Encryption();
+    	String msg = "всего навсего простая строка";
+    	
+    	en.printAlphabet();
+    	
     }
     private static String toHex(String arg) {
         return String.format("%040x", new BigInteger(1, arg.getBytes())).toUpperCase();
