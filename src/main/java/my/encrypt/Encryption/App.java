@@ -21,6 +21,7 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
 import my.encrypt.elgamal.*;
+import my.encrypt.format_preserving.Feistel;
 
 public class App 
 {
@@ -28,16 +29,18 @@ public class App
     {
 
     	Encryption en = new Encryption();
-    	String msg = "всего навсего простая строка";
-    	
-    	en.printAlphabet();
+    	Feistel fstl = new Feistel();
+    	fstl.encode(new int[] {0,1,2,3},4);
+    	//en.printAlphabet();
     	
     }
-    private static String toHex(String arg) {
+    @SuppressWarnings("unused")
+	private static String toHex(String arg) {
         return String.format("%040x", new BigInteger(1, arg.getBytes())).toUpperCase();
     }
     
-    private static String hex(byte[] bytes) {
+    @SuppressWarnings("unused")
+	private static String hex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<bytes.length; i++) {
             sb.append(String.format("%02X ",bytes[i]));
@@ -45,7 +48,8 @@ public class App
         return sb.toString();
     }
     
-    private static void xor() throws UnsupportedEncodingException
+    @SuppressWarnings("unused")
+	private static void xor() throws UnsupportedEncodingException
     {
     	Encryption en = new Encryption();
     	String msg = "всего навсего простая строка";

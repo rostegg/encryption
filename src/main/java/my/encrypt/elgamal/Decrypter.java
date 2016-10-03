@@ -13,7 +13,7 @@ public class Decrypter {
 	}
 	  
 	public byte[] decrypt(byte[] msg){ 
-		long startTm = System.currentTimeMillis();
+		//long startTm = System.currentTimeMillis();
 	    int blkSz = (p.bitLength()-1)/8 + 1;
 	    byte[][] ba2 = Transform.block(msg, blkSz);
 	    byte[][] ba  = new byte[ba2.length/2][];

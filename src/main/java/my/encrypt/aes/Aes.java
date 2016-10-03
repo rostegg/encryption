@@ -1,7 +1,7 @@
 package my.encrypt.aes;
 
 public class Aes {
-	private static int Nb, Nk, Nr;
+	private static int Nb = 4, Nk = 4, Nr=10;
 	private static byte[][] w;
 
 	private static int[] sbox = { 0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F,
@@ -225,13 +225,15 @@ public class Aes {
 		return r;
 	}
 
-	public byte[] encryptBloc(byte[] in) {
+	private byte[] encryptBlock(byte[] in) {
 		byte[] tmp = new byte[in.length];
 		
 		byte[][] state = new byte[4][Nb];
-
+		System.out.println("Blockk size - " + in.length);
 		for (int i = 0; i < in.length; i++)
+		{
 			state[i / 4][i % 4] = in[i%4*4+i/4];
+		}
 
 		state = addRoundKey(state, w, 0);
 		for (int round = 1; round < Nr; round++) {
@@ -249,8 +251,31 @@ public class Aes {
 
 		return tmp;
 	}
+	
+	public byte[] encryptBlockWithoutKey(byte[] in) {
+		byte[] tmp = new byte[in.length];
+		
+		byte[][] state = new byte[4][Nb];
+		for (int i = 0; i < in.length; i++)
+		{
+			state[i / 4][i % 4] = in[i%4*4+i/4];
+		}
 
-	public byte[] decryptBloc(byte[] in) {
+		for (int round = 1; round < Nr; round++) {
+			state = subBytes(state);
+			state = shiftRows(state);
+			state = mixColumns(state);
+		}
+		state = subBytes(state);
+		state = shiftRows(state);
+
+		for (int i = 0; i < tmp.length; i++)
+			tmp[i%4*4+i/4] = state[i / 4][i%4];
+
+		return tmp;
+	}
+
+	private byte[] decryptBlock(byte[] in) {
 		byte[] tmp = new byte[in.length];
 
 		byte[][] state = new byte[4][Nb];
@@ -292,7 +317,7 @@ public class Aes {
 			padding[i] = 0;
 
 		byte[] tmp = new byte[in.length + lenght];		
-		byte[] bloc = new byte[16];							
+		byte[] block = new byte[16];							
 		
 		
 		w = generateSubkeys(key);
@@ -301,19 +326,19 @@ public class Aes {
 
 		for (i = 0; i < in.length + lenght; i++) {
 			if (i > 0 && i % 16 == 0) {
-				bloc = encryptBloc(bloc);
-				System.arraycopy(bloc, 0, tmp, i - 16, bloc.length);
+				block = encryptBlock(block);
+				System.arraycopy(block, 0, tmp, i - 16, block.length);
 			}
 			if (i < in.length)
-				bloc[i % 16] = in[i];
+				block[i % 16] = in[i];
 			else{														
-				bloc[i % 16] = padding[count % 16];
+				block[i % 16] = padding[count % 16];
 				count++;
 			}
 		}
-		if(bloc.length == 16){
-			bloc = encryptBloc(bloc);
-			System.arraycopy(bloc, 0, tmp, i - 16, bloc.length);
+		if(block.length == 16){
+			block = encryptBlock(block);
+			System.arraycopy(block, 0, tmp, i - 16, block.length);
 		}
 		
 		return tmp;
@@ -322,7 +347,7 @@ public class Aes {
 	public byte[] decrypt(byte[] in,byte[] key){
 		int i;
 		byte[] tmp = new byte[in.length];
-		byte[] bloc = new byte[16];
+		byte[] block = new byte[16];
 		
 		
 		Nb = 4;
@@ -333,14 +358,14 @@ public class Aes {
 
 		for (i = 0; i < in.length; i++) {
 			if (i > 0 && i % 16 == 0) {
-				bloc = decryptBloc(bloc);
-				System.arraycopy(bloc, 0, tmp, i - 16, bloc.length);
+				block = decryptBlock(block);
+				System.arraycopy(block, 0, tmp, i - 16, block.length);
 			}
 			if (i < in.length)
-				bloc[i % 16] = in[i];
+				block[i % 16] = in[i];
 		}
-		bloc = decryptBloc(bloc);
-		System.arraycopy(bloc, 0, tmp, i - 16, bloc.length);
+		block = decryptBlock(block);
+		System.arraycopy(block, 0, tmp, i - 16, block.length);
 
 
 		tmp = deletePadding(tmp);
