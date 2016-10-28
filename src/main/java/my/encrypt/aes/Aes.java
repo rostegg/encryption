@@ -229,7 +229,7 @@ public class Aes {
 		byte[] tmp = new byte[in.length];
 		
 		byte[][] state = new byte[4][Nb];
-		System.out.println("Blockk size - " + in.length);
+		
 		for (int i = 0; i < in.length; i++)
 		{
 			state[i / 4][i % 4] = in[i%4*4+i/4];
@@ -294,6 +294,30 @@ public class Aes {
 		state = invSubBytes(state);
 		state = invShiftRows(state);
 		state = addRoundKey(state, w, 0);
+
+		for (int i = 0; i < tmp.length; i++)
+			tmp[i%4*4+i/4] = state[i / 4][i%4];
+
+		return tmp;
+	}
+	
+	private byte[] decryptBlockWithoutKey(byte[] in) {
+		byte[] tmp = new byte[in.length];
+
+		byte[][] state = new byte[4][Nb];
+
+		for (int i = 0; i < in.length; i++)
+			state[i / 4][i % 4] = in[i%4*4+i/4];
+
+		state = addRoundKey(state, w, Nr);
+		for (int round = Nr-1; round >=1; round--) {
+			state = invSubBytes(state);
+			state = invShiftRows(state);
+			state = invMixColumns(state);
+			
+		}
+		state = invSubBytes(state);
+		state = invShiftRows(state);
 
 		for (int i = 0; i < tmp.length; i++)
 			tmp[i%4*4+i/4] = state[i / 4][i%4];

@@ -1,9 +1,8 @@
-package my.encrypt.Encryption;
+package my.encrypt.main;
 
 import my.encrypt.aes.Aes;
 import my.encrypt.blowfish.Blowfish;
 import my.encrypt.des.Des;
-import my.encrypt.des.DesImp;
 import my.encrypt.diffehellman.*;
 
 import java.io.UnsupportedEncodingException;
@@ -27,11 +26,10 @@ public class App
 {
     public static void main( String[] args ) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, DecoderException
     {
-
-    	Encryption en = new Encryption();
-    	Feistel fstl = new Feistel();
-    	fstl.encode(new int[] {0,1,2,3},4);
-    	//en.printAlphabet();
+    	
+    	//SimpleAlgorithms en = new SimpleAlgorithms();
+    	//Feistel fstl = new Feistel();
+    	//fstl.encode(new int[] {0,1,2,3},4);
     	
     }
     @SuppressWarnings("unused")
@@ -51,11 +49,10 @@ public class App
     @SuppressWarnings("unused")
 	private static void xor() throws UnsupportedEncodingException
     {
-    	Encryption en = new Encryption();
-    	String msg = "всего навсего простая строка";
-    	byte [] bytes = en.encryptXor(msg, 134);
+    	String msg = "всегонавсегопростаястрока";
+    	byte [] bytes = SimpleAlgorithms.xorEncrypt(msg, 134);
     	
-    	System.out.printf("In : %s \nOut : %s", new String(bytes,"ASCII"),en.decryptXor(bytes, 134) );
+    	System.out.printf("Out : %s",SimpleAlgorithms.xorDecrypt(bytes, 134) );
     }
 }
     

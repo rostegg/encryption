@@ -5,13 +5,13 @@ import java.util.Arrays;
 
 import my.encrypt.aes.Aes;
 import my.encrypt.des.Des;
-import my.encrypt.des.DesImp;
 import my.encrypt.diffehellman.Jack;
 import my.encrypt.diffehellman.Kelly;
 import my.encrypt.diffehellman.Spy;
 import my.encrypt.elgamal.Decrypter;
 import my.encrypt.elgamal.Elgamal;
 import my.encrypt.elgamal.Encrypter;
+import my.encrypt.main.SimpleAlgorithms;
 import junit.framework.TestCase;
 
 public class EncryptionTests extends TestCase {
@@ -66,23 +66,11 @@ public class EncryptionTests extends TestCase {
 
 	public void testDes()
 	{
-		Des des = new Des();
-		des.test(
-                des.parseBytes("a4b2 c9ef 0876 c1ce 438d e282 3820 dbde"),
-                des.parseBytes("fa60 69b9 85fa 1cf7 0bea a041 9137 a6d3"),
-                "mypass"
-            );
-		
-		des.test(
-				des.parseBytes("f3ed a6dc f8b7 9dd6 5be0 db8b 1e7b a551"),
-				des.parseBytes("b669 d033 6c3f 42b7 68e8 e937 b4a5 7546"),
-		            "mypass"
-		        );
-		
 		String in = "helloworldman";
         String key = "thismykey";
-        byte [] out = DesImp.encrypt(in.getBytes(), key.getBytes());
-        assertTrue(new String(DesImp.decrypt(out, key.getBytes())).equals(in));
+        System.out.println("\n\nStart Aes algorithm.\nStarting translate : " + in + "\n\t Common symmetrically key : " + key);	
+        byte [] out = Des.encrypt(in.getBytes(), key.getBytes());
+        assertTrue(new String(Des.decrypt(out, key.getBytes())).equals(in));
         
 	}
 	public void testAes()
@@ -113,6 +101,27 @@ public class EncryptionTests extends TestCase {
         String bck = new String(out);
         assertTrue(bck.equals(msg));
     }
+	
+	public void testCaesar()
+	{
+		String msg = "приветпока";
+		String out = SimpleAlgorithms.caesarEncrypt(msg, 3);
+		assertTrue(msg.equals(SimpleAlgorithms.caesarDecrypt(out, 3)));
+	}
+	
+	public void testTrithemius()
+	{
+		String msg = "приветмир";
+    	String out = SimpleAlgorithms.trithemiusEncrypt(msg);
+    	assertTrue(msg.equals(SimpleAlgorithms.trithemiusDecrypt(out)));
+	}
+	
+	public void NotestXor()
+	{
+		String msg = "приветмир";
+    	byte [] out = SimpleAlgorithms.xorEncrypt(msg, 134);
+    	assertTrue(msg.getBytes().equals(SimpleAlgorithms.xorDecrypt(out, 134).getBytes()));
+	}
 	
 	
 	

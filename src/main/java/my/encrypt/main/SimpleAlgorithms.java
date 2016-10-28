@@ -1,10 +1,9 @@
-package my.encrypt.Encryption;
+package my.encrypt.main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class Encryption {
+public final class SimpleAlgorithms {
 
 	static List<Character> alphabet = new ArrayList<Character>();
 	static
@@ -26,7 +25,7 @@ public class Encryption {
 		//SPACE
 		alphabet.add(' ');
 	}
-	public void printAlphabet()
+	public static void printAlphabet()
 	{
 		for (char symbol : alphabet)
 		{
@@ -35,12 +34,12 @@ public class Encryption {
 		System.out.print("\n");
 	}
 	
-	private int getFunction(int x)
+	private static int getFunction(int x)
 	{
 		return (3*x)+2;
 	}
 	
-	public String trithemius(String input)
+	public static String trithemiusEncrypt(String input)
 	{
 		StringBuilder result = new StringBuilder();
 		List<Character> local = new ArrayList<Character>();
@@ -57,7 +56,7 @@ public class Encryption {
 		return result.toString();
 	}
 	
-	public String trithemiusDecrypt(String input)
+	public static String trithemiusDecrypt(String input)
 	{
 		StringBuilder result = new StringBuilder();
 		List<Character> local = new ArrayList<Character>();
@@ -80,7 +79,7 @@ public class Encryption {
 		return result.toString();
 	}
 	
-	public String caesar(String input,int shift)
+	public static String caesarEncrypt(String input,int shift)
 	{
 		List<Character> local = new ArrayList<Character>();
 		for (char c : alphabet) {
@@ -97,7 +96,7 @@ public class Encryption {
 		return result.toString();
 	}
 	
-	public String caesarDecrypt(String input,int shift)
+	public static String caesarDecrypt(String input,int shift)
 	{
 
 		List<Character> local = new ArrayList<Character>();
@@ -113,7 +112,7 @@ public class Encryption {
 		return result.toString();
 	}
 	
-	public byte[] encryptXor(String msg, int key)
+	public static byte[] xorEncrypt(String msg, int key)
 	{
 		int A = 3, C = 2,m = 101;
 	    int actualKey = key;
@@ -127,7 +126,7 @@ public class Encryption {
         return result;
 	}
 	
-	public String decryptXor(byte[] msg, int key)
+	public static String xorDecrypt(byte[] msg, int key)
     {
 		int A = 3, C = 2,m = 101;
         byte[] result  = new byte[msg.length];
